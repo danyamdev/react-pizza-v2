@@ -1,4 +1,7 @@
-import { Header, Categories, Sort, PizzaList } from "./components";
+import { Routes, Route } from "react-router-dom";
+
+import { Header } from "./components";
+import { routes } from "./routes";
 
 import "./assets/scss/app.scss";
 
@@ -8,11 +11,11 @@ const App = () => {
       <Header/>
       <div className="content">
         <div className="container">
-          <div className="content__top">
-            <Categories/>
-            <Sort/>
-          </div>
-          <PizzaList/>
+          <Routes>
+            {routes.map(r => (
+              <Route key={r.path} path={r.path} element={r.element}/>
+            ))}
+          </Routes>
         </div>
       </div>
     </div>

@@ -1,7 +1,19 @@
+import { useState } from "react";
+
+const sortNames = ["популярности", "цене", "алфавиту"];
+
 const Sort = () => {
+	const [open, setOpen] = useState(false);
+	const [isActive, setIsActive] = useState(0);
+
+	const onChangeIsHidePopup = (index) => {
+		setIsActive(index);
+		setOpen(false);
+	};
+
 	return (
 		<div className="sort">
-			<div className="sort__label">
+			<div className="sort__label" onClick={() => setOpen(!open)}>
 				<svg
 					width="10"
 					height="6"
@@ -15,15 +27,22 @@ const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span>популярности</span>
+				<span>{sortNames[isActive]}</span>
 			</div>
-			<div className="sort__popup">
-				<ul>
-					<li className="active">популярности</li>
-					<li>цене</li>
-					<li>алфавиту</li>
-				</ul>
-			</div>
+			{open && (
+				<div className="sort__popup">
+					<ul>
+						{sortNames.map((s, i) => (
+							<li
+								key={s}
+								className={isActive === i ? "active" : ""}
+								onClick={() => onChangeIsHidePopup(i)}>
+								{s}
+							</li>
+						))}
+					</ul>
+				</div>
+			)}
 		</div>
 	)
 };

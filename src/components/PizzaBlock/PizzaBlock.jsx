@@ -1,33 +1,44 @@
 import { useState } from "react";
 
-const PizzaBlock = () => {
-	const [pizzaCount, setPizzaCount] = useState(0);
+const typesName = ["тонкое", "традиционное"];
 
-	const addPizzaClick = () => setPizzaCount(pizzaCount + 1);
+const PizzaBlock = ({ imageUrl, title, types, sizes, price }) => {
+	const [type, setType] = useState(0);
+	const [size, setSize] = useState(0);
 
 	return (
 		<div className="pizza-block">
 			<img
 				className="pizza-block__image"
-				src="https://dodopizza-a.akamaihd.net/static/Img/Products/Pizza/ru-RU/b750f576-4a83-48e6-a283-5a8efb68c35d.jpg"
-				alt="Pizza"
+				src={imageUrl}
+				alt={title}
 			/>
-			<h4 className="pizza-block__title">Чизбургер-пицца</h4>
+			<h4 className="pizza-block__title">{title}</h4>
 			<div className="pizza-block__selector">
 				<ul>
-					<li className="active">тонкое</li>
-					<li>традиционное</li>
+					{types.map(t => (
+						<li
+							key={t}
+							className={type === t ? "active" : ""}
+							onClick={() => setType(t)}>
+							{typesName[t]}
+						</li>
+					))}
 				</ul>
 				<ul>
-					<li className="active">26 см.
-					</li>
-					<li>30 см.</li>
-					<li>40 см.</li>
+					{sizes.map((s, i) => (
+						<li
+							key={s}
+							className={size === i ? "active" : ""}
+							onClick={() => setSize(i)}>
+							{s} см.
+						</li>
+					))}
 				</ul>
 			</div>
 			<div className="pizza-block__bottom">
-				<div className="pizza-block__price">от 395 ₽</div>
-				<div className="button button--outline button--add" onClick={addPizzaClick}>
+				<div className="pizza-block__price">от {price} ₽</div>
+				<div className="button button--outline button--add">
 					<svg
 						width="12"
 						height="12"
@@ -41,7 +52,7 @@ const PizzaBlock = () => {
 						/>
 					</svg>
 					<span>Добавить</span>
-					<i>{pizzaCount}</i>
+					<i>0</i>
 				</div>
 			</div>
 		</div>

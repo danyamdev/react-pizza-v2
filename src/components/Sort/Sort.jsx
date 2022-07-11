@@ -1,13 +1,16 @@
 import { useState } from "react";
 
-const sortNames = ["популярности", "цене", "алфавиту"];
+const sortNames = [
+	{name: "популярности", property: "rating"},
+	{name: "цене", property: "price"},
+	{name: "алфавиту", property: "title"},
+];
 
-const Sort = () => {
+const Sort = ({ value, onChangeSort }) => {
 	const [open, setOpen] = useState(false);
-	const [isActive, setIsActive] = useState(0);
 
-	const onChangeIsHidePopup = (index) => {
-		setIsActive(index);
+	const onChangeIsHidePopup = (value) => {
+		onChangeSort(value);
 		setOpen(false);
 	};
 
@@ -27,17 +30,17 @@ const Sort = () => {
 					/>
 				</svg>
 				<b>Сортировка по:</b>
-				<span>{sortNames[isActive]}</span>
+				<span>{value.name}</span>
 			</div>
 			{open && (
 				<div className="sort__popup">
 					<ul>
-						{sortNames.map((s, i) => (
+						{sortNames.map((obj) => (
 							<li
-								key={s}
-								className={isActive === i ? "active" : ""}
-								onClick={() => onChangeIsHidePopup(i)}>
-								{s}
+								key={obj.property}
+								className={value.property === obj.property ? "active" : ""}
+								onClick={() => onChangeIsHidePopup(obj)}>
+								{obj.name}
 							</li>
 						))}
 					</ul>

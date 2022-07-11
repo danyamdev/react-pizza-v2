@@ -13,6 +13,10 @@
   &__logo {
     display: flex;
 
+    a {
+      display: flex;
+    }
+
     img {
       margin-right: 15px;
     }

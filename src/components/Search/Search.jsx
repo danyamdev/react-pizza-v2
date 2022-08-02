@@ -1,8 +1,9 @@
 import React, { useContext } from 'react';
+import { DebounceInput } from "react-debounce-input";
 
 import { SearchContext } from "../../App";
 
-import styles from './Search.module.scss';
+import styles from "./Search.module.scss";
 
 export const Search = () => {
 	const { search, setSearch } = useContext(SearchContext);
@@ -42,11 +43,13 @@ export const Search = () => {
 					y2="20.366"
 				/>
 			</svg>
-			<input
-				value={search}
-				onChange={(e) => setSearch(e.target.value)}
+			<DebounceInput
+				element="input"
 				className={styles.input}
 				placeholder="Поиск пиццы..."
+				debounceTimeout={300}
+				value={search}
+				onChange={event => setSearch(event.target.value)}
 			/>
 			{search && (
 				<svg

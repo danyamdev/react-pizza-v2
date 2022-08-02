@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-import { SearchContext } from "../../App"
-	;
+import { SearchContext } from "../../App";
 import Skeleton from "../Skeleton";
 import { PizzaBlock } from "../index";
 import { Pagination } from "../Pagination/Pagination";
 
-const PizzaList = ({ sortType, categoryId }) => {
+const PizzaList = () => {
 	const { search } = useContext(SearchContext);
+
+	const { categoryId, sort } = useSelector((state) => state.filter);
 
 	const [pizzas, setPizzas] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
@@ -16,11 +18,11 @@ const PizzaList = ({ sortType, categoryId }) => {
 	useEffect(() => {
 		setIsLoading(true);
 
-		const sort = `sortBy=${sortType.property}&order=desc`;
+		const sortBy = `sortBy=${sort.property}&order=desc`;
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";
 		const page = `&page=${currentPage}&limit=4`;
 
-		fetch("https://62ade5f2645d00a28a01a037.mockapi.io/pizza?" + sort + category + `&search=${search}` + page)
+		fetch("https://62ade5f2645d00a28a01a037.mockapi.io/pizza?" + sortBy + category + `&search=${search}` + page)
 			.then(res => res.json())
 			.then(json => {
 				setPizzas(json);
@@ -29,7 +31,7 @@ const PizzaList = ({ sortType, categoryId }) => {
 			.catch(e => console.log(e));
 
 		window.scrollTo(0, 0);
-	}, [sortType, categoryId, search, currentPage]);
+	}, [sort.property, categoryId, search, currentPage]);
 
 	return (
 		<>

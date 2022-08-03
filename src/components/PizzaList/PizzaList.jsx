@@ -11,34 +11,26 @@ import { Pagination } from "../Pagination/Pagination";
 
 import { sortNames } from "../Sort/Sort";
 import { setFilters } from "../../redux/slice/filterSlice";
+import { fetchPizzas } from "../../redux/slice/pizzasSlice";
 
 const PizzaList = () => {
 	const navigate = useNavigate();
 	const { search } = useContext(SearchContext);
 
 	const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
+	const { items, status } = useSelector(state => state.pizzas);
 
 	const dispatch = useDispatch();
-
-	const [pizzas, setPizzas] = useState([]);
-	const [isLoading, setIsLoading] = useState(true);
 
 	const isSearch = useRef(false);
 	const isMounted = useRef(false);
 
-	const fetchPizzas = () => {
-		setIsLoading(true);
-
+	const getPizzas = () => {
 		const sortBy = `sortBy=${sort.property}&order=desc`;
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";
 		const page = `&page=${currentPage}&limit=4`;
 
-		axios.get("https://62ade5f2645d00a28a01a037.mockapi.io/pizza?" + sortBy + category + `&search=${search}` + page)
-			.then(res => {
-				setPizzas(res.data);
-			})
-			.catch(e => console.log(e))
-			.finally(() => setIsLoading(false));
+		dispatch(fetchPizzas({ sortBy, category, search, page }));
 	}
 
 	// Если изменили параметры и был первый рендер
@@ -70,9 +62,9 @@ const PizzaList = () => {
 	useEffect(() => {
 		window.scrollTo(0, 0);
 
-		if (!isSearch.current) {
-			fetchPizzas();
-		}
+		// if (!isSearch.current) {
+			getPizzas();
+		// }
 
 		isSearch.current = false;
 	}, [sort.property, categoryId, search, currentPage]);
@@ -80,10 +72,11 @@ const PizzaList = () => {
 	return (
 		<>
 			<h2 className="content__title">Все пиццы</h2>
+			{status === "error" && <p>Ошибка... Попробуйте позже.</p>}
 			<div className="content__items">
-				{isLoading
+				{status === "loading"
 					? [...new Array(6)].map((_, i) => <Skeleton key={i}/>)
-					: pizzas.map(p => <PizzaBlock key={p.id} {...p}/>)
+					: items.map(p => <PizzaBlock key={p.id} {...p}/>)
 				}
 			</div>
 			<Pagination currentPage={currentPage} />

@@ -1,24 +1,21 @@
-import {useContext, useEffect, useRef, useState} from "react";
+import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import qs from "qs";
 
-import { SearchContext } from "../../App";
 import Skeleton from "../Skeleton";
 import { PizzaBlock } from "../index";
 import { Pagination } from "../Pagination/Pagination";
 
 import { sortNames } from "../Sort/Sort";
-import { setFilters } from "../../redux/slice/filterSlice";
-import { fetchPizzas } from "../../redux/slice/pizzasSlice";
+import { filterSelector, setFilters } from "../../redux/slice/filterSlice";
+import { fetchPizzas, pizzasSelector } from "../../redux/slice/pizzasSlice";
 
 const PizzaList = () => {
 	const navigate = useNavigate();
-	const { search } = useContext(SearchContext);
 
-	const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
-	const { items, status } = useSelector(state => state.pizzas);
+	const { categoryId, sort, currentPage, searchValue } = useSelector(filterSelector);
+	const { items, status } = useSelector(pizzasSelector);
 
 	const dispatch = useDispatch();
 
@@ -30,7 +27,7 @@ const PizzaList = () => {
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";
 		const page = `&page=${currentPage}&limit=4`;
 
-		dispatch(fetchPizzas({ sortBy, category, search, page }));
+		dispatch(fetchPizzas({ sortBy, category, search: searchValue, page }));
 	}
 
 	// Если изменили параметры и был первый рендер
@@ -67,7 +64,7 @@ const PizzaList = () => {
 		// }
 
 		isSearch.current = false;
-	}, [sort.property, categoryId, search, currentPage]);
+	}, [sort.property, categoryId, searchValue, currentPage]);
 
 	return (
 		<>

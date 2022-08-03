@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { addItem } from "../../redux/slice/cartSlice";
+import { addItem, cartSelector } from "../../redux/slice/cartSlice";
 
 const typesName = ["тонкое", "традиционное"];
 
 const PizzaBlock = ({ id, imageUrl, title, types, sizes, price }) => {
-	const { items } = useSelector(state => state.cart);
+	const { items } = useSelector(cartSelector);
 
 	const dispatch = useDispatch();
 

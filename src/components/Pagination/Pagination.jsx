@@ -8,6 +8,7 @@ import styles from "./Pagination.module.scss";
 
 export const Pagination = ({ currentPage }) => {
 	const dispatch = useDispatch();
+
 	return (
 		<ReactPaginate
 			className={styles.root}

@@ -1,12 +1,14 @@
-import React, { useContext } from 'react';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { DebounceInput } from "react-debounce-input";
 
-import { SearchContext } from "../../App";
+import { filterSelector, setSearchValue } from "../../redux/slice/filterSlice";
 
 import styles from "./Search.module.scss";
 
 export const Search = () => {
-	const { search, setSearch } = useContext(SearchContext);
+	const { searchValue } = useSelector(filterSelector);
+	const dispatch = useDispatch();
 
 	return (
 		<div className={styles.root}>
@@ -48,12 +50,12 @@ export const Search = () => {
 				className={styles.input}
 				placeholder="Поиск пиццы..."
 				debounceTimeout={300}
-				value={search}
-				onChange={event => setSearch(event.target.value)}
+				value={searchValue}
+				onChange={event => dispatch(setSearchValue(event.target.value))}
 			/>
-			{search && (
+			{searchValue && (
 				<svg
-					onClick={() => setSearch("")}
+					onClick={() => dispatch(setSearchValue(""))}
 					className={styles.clearIcon}
 					viewBox="0 0 20 20"
 					xmlns="http://www.w3.org/2000/svg">

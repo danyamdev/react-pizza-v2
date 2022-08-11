@@ -1,3 +1,4 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -6,12 +7,12 @@ import { CartEmpty } from "../components/CartEmpty/CartEmpty";
 
 import { cartSelector, clearItems } from "../redux/slice/cartSlice";
 
-const Cart = () => {
+const Cart: React.FC = () => {
 	const { totalPrice, items } = useSelector(cartSelector);
 
 	const dispatch = useDispatch();
 
-	const count = items.reduce((sum, item) => item.count + sum, 0);
+	const count: number = items.reduce((sum: number, item: any) => item.count + sum, 0);
 
 	const onClickClearItems = () => {
 		dispatch(clearItems());
@@ -90,18 +91,12 @@ const Cart = () => {
 					</div>
 				</div>
 				<div className="content__items">
-					{items.map(item => <CartItem key={item.id} {...item} />)}
+					{items.map((item: any) => <CartItem key={item.id} {...item} />)}
 				</div>
 				<div className="cart__bottom">
 					<div className="cart__bottom-details">
-            <span>
-              {' '}
-	            Всего пицц: <b>{count} шт.</b>{' '}
-            </span>
-						<span>
-              {' '}
-							Сумма заказа: <b>{totalPrice} ₽</b>{' '}
-            </span>
+            <span>Всего пицц: <b>{count} шт.</b></span>
+						<span>Сумма заказа: <b>{totalPrice} ₽</b></span>
 					</div>
 					<div className="cart__bottom-buttons">
 						<Link to="/" className="button button--outline button--add go-back-btn">

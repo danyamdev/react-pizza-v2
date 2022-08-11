@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import qs from "qs";
@@ -11,7 +11,7 @@ import { sortNames } from "../Sort/Sort";
 import { filterSelector, setFilters } from "../../redux/slice/filterSlice";
 import { fetchPizzas, pizzasSelector } from "../../redux/slice/pizzasSlice";
 
-const PizzaList = () => {
+const PizzaList: React.FC = () => {
 	const navigate = useNavigate();
 
 	const { categoryId, sort, currentPage, searchValue } = useSelector(filterSelector);
@@ -19,14 +19,15 @@ const PizzaList = () => {
 
 	const dispatch = useDispatch();
 
-	const isSearch = useRef(false);
-	const isMounted = useRef(false);
+	const isSearch = useRef<boolean>(false);
+	const isMounted = useRef<boolean>(false);
 
 	const getPizzas = () => {
 		const sortBy = `sortBy=${sort.property}&order=desc`;
 		const category = categoryId > 0 ? `&category=${categoryId}` : "";
 		const page = `&page=${currentPage}&limit=4`;
 
+		// @ts-ignore
 		dispatch(fetchPizzas({ sortBy, category, search: searchValue, page }));
 	}
 
@@ -73,7 +74,7 @@ const PizzaList = () => {
 			<div className="content__items">
 				{status === "loading"
 					? [...new Array(6)].map((_, i) => <Skeleton key={i}/>)
-					: items.map(p => <PizzaBlock key={p.id} {...p}/>)
+					: items.map((p: any) => <PizzaBlock key={p.id} {...p}/>)
 				}
 			</div>
 			<Pagination currentPage={currentPage} />

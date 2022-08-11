@@ -6,7 +6,11 @@ import { setCurrentPage } from "../../redux/slice/filterSlice";
 
 import styles from "./Pagination.module.scss";
 
-export const Pagination = ({ currentPage }) => {
+type TProps = {
+	currentPage: number
+}
+
+export const Pagination: React.FC<TProps> = ({ currentPage }) => {
 	const dispatch = useDispatch();
 
 	return (

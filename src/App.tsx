@@ -1,3 +1,4 @@
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Header } from "./components";
@@ -5,7 +6,7 @@ import { routes } from "./routes";
 
 import "./assets/scss/app.scss";
 
-const App = () => {
+const App: React.FC = () => {
   return (
     <div className="wrapper">
       <Header/>

@@ -1,31 +1,42 @@
-import {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setSort, filterSelector } from "../../redux/slice/filterSlice";
 
-export const sortNames = [
+type TSortItem = {
+	name: string;
+	property: string;
+};
+
+type TSortPopup = MouseEvent & {
+	path: Node[]
+};
+
+export const sortNames: TSortItem[] = [
 	{ name: "популярности", property: "rating" },
 	{ name: "цене", property: "price" },
 	{ name: "алфавиту", property: "title" },
 ];
 
-const Sort = () => {
+const Sort: React.FC = () => {
 	const { sort } = useSelector(filterSelector);
 
 	const dispatch = useDispatch();
 
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState<boolean>(false);
 
-	const sortRef = useRef(null);
+	const sortRef = useRef<HTMLDivElement>(null);
 
-	const onChangeIsHidePopup = (obj) => {
+	const onChangeIsHidePopup = (obj: TSortItem) => {
 		dispatch(setSort(obj));
 		setOpen(false);
 	};
 
 	useEffect(() => {
-		const handleClickOutside = (event) => {
-			if (!event.path.includes(sortRef.current)) {
+		const handleClickOutside = (event: MouseEvent) => {
+			const _event = event as TSortPopup;
+
+			if (sortRef.current && !_event.path.includes(sortRef.current)) {
 				setOpen(false);
 			}
 		};

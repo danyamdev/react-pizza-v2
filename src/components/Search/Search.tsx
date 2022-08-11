@@ -6,7 +6,7 @@ import { filterSelector, setSearchValue } from "../../redux/slice/filterSlice";
 
 import styles from "./Search.module.scss";
 
-export const Search = () => {
+export const Search: React.FC = () => {
 	const { searchValue } = useSelector(filterSelector);
 	const dispatch = useDispatch();
 
